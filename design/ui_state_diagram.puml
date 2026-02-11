@@ -3,37 +3,39 @@ title UI State Transition Diagram - Online Voting System
 
 [*] --> LandingPage : เข้าใช้งานเว็บไซต์
 
-state LandingPage {
+state "Landing Page [P-01: index.html]" as LandingPage {
 [*] --> PublicDashboard : ดูคะแนนแบบ Real-time (UC-11)
 PublicDashboard --> GoogleLogin : กดปุ่มลงชื่อเข้าใช้ (ผู้มีสิทธิ)
 PublicDashboard --> AdminLogin : เข้าสู่ระบบจัดการ (กกต)
 }
-state "Voter Flow (ผู้มีสิทธิเลือกตั้ง)" as VoterFlow {
+state "Voter Flow [P-02: voter.html]" as VoterFlow {
 GoogleLogin --> VoterDashboard : UC-07 (Auth สำเร็จ)
-state VoterDashboard {
+state "Voter Dashboard [P-02-1]" as VoterDashboard {
    [*] --> CheckStatus : ระบบตรวจสอบสิทธิ์และเขต
    CheckStatus --> ReadyToVote : ยังไม่ได้ลงคะแนน & ระบบเปิด (UC-08)
    CheckStatus --> AlreadyVoted : ลงคะแนนแล้ว
    CheckStatus --> VotingClosed : ระบบปิด/ยังไม่เปิด (UC-03)
 }
-ReadyToVote --> BallotInterface : กด "เข้าสู่คูหาออนไลน์"
-BallotInterface --> VoteConfirmation : UC-09 (เลือกหมายเลขผู้สมัคร)
-VoteConfirmation --> VotingSuccess : กดยืนยัน (Transaction บันทึกคะแนน)
+ReadyToVote --> BallotInterface : กด "เข้าสู่คูหาออนไลน์" [P-02-2]
+BallotInterface --> VoteConfirmation : UC-09 (เลือกหมายเลขผู้สมัคร) [P-02-3]
+VoteConfirmation --> VotingSuccess : กดยืนยัน (Transaction บันทึกคะแนน) [P-02-4]
 VotingSuccess --> PublicDashboard : กลับหน้าสรุปผล
 }
-state "EC Admin Flow (กกต กลาง)" as AdminFlow {
+state "EC Admin Flow [P-03: admin.html]" as AdminFlow {
 AdminLogin --> AdminControlPanel : Login สำเร็จ
 
-state AdminControlPanel {
+state "Admin Control Panel [P-03-0]" as AdminControlPanel {
    [*] --> MasterDataManagement : จัดการข้อมูลพื้นฐาน
-   MasterDataManagement --> PartyList : UC-01 (จัดการพรรค)
-   MasterDataManagement --> ConstituencyList : UC-02 (จัดการเขต)
-  
-   [*] --> CandidateManagement : UC-05 (ลงทะเบียนผู้สมัคร)
-   CandidateManagement --> RandomizeNumbers : UC-06 (กดสุ่มหมายเลข)
-  
-   [*] --> ElectionControl : UC-03, UC-08 (ตั้งค่าเวลา/เปิดระบบ)
-   ElectionControl --> FinalizeElection : UC-10 (ปิดหีบ/ยืนยันผลถาวร)
+   MasterDataManagement --> PartyList : UC-01 (จัดการพรรค) [P-03-1]
+   MasterDataManagement --> ConstituencyList : UC-02 (จัดการเขต) [P-03-2]
+
+   [*] --> VoterRegistration : UC-04 (ลงทะเบียนผู้มีสิทธิ์) [P-03-3]
+
+   [*] --> CandidateManagement : UC-05 (ลงทะเบียนผู้สมัคร) [P-03-4]
+   CandidateManagement --> RandomizeNumbers : UC-06 (กดสุ่มหมายเลข) [P-03-5]
+
+   [*] --> ElectionControl : UC-03, UC-08 (ตั้งค่าเวลา/เปิดระบบ) [P-03-6]
+   ElectionControl --> FinalizeElection : UC-10 (ปิดหีบ/ยืนยันผลถาวร) [P-03-7]
 }
 }
 AlreadyVoted --> PublicDashboard : ดูผลคะแนน
