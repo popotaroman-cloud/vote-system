@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเลือกตั้งออนไลน์ - ลงคะแนน</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>ระบบเลือกตั้งออนไลน์</h1>
+            <p class="subtitle">Online Election System</p>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">หน้าหลัก</a>
+                <a href="voter.html" class="nav-link active">ลงคะแนน</a>
+                <a href="admin.html" class="nav-link">กกต. เข้าสู่ระบบ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="voter-container">
+
+            <!-- Step Indicator -->
+            <div class="step-indicator" id="step-indicator">
+                <div class="step active" id="step-1">1</div>
+                <div class="step-line"></div>
+                <div class="step" id="step-2">2</div>
+                <div class="step-line"></div>
+                <div class="step" id="step-3">3</div>
+                <div class="step-line"></div>
+                <div class="step" id="step-4">4</div>
+            </div>
+
+            <!-- Step 1: Google Login (UC-07) -->
+            <div id="voter-step-1" class="voter-step">
+                <div class="card text-center">
+                    <h2>ยืนยันตัวตน (UC-07)</h2>
+                    <p class="mt-1" style="color: var(--gray-500);">ลงชื่อเข้าใช้ด้วย Google Account เพื่อยืนยันสิทธิ์การเลือกตั้ง</p>
+                    <div class="form-group mt-2">
+                        <label>เลือกบัญชีผู้มีสิทธิ์ (Mock Google Login)</label>
+                        <select id="mock-google-select">
+                            <option value="">-- เลือกผู้ใช้ --</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary mt-1" onclick="mockGoogleLogin()" style="background:#4285f4;">
+                        Sign in with Google (Mock)
+                    </button>
+                    <p class="mt-2" style="font-size:0.8rem; color:var(--gray-500);">Prototype: เลือกจากรายชื่อผู้มีสิทธิ์จำลอง</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Status Check -->
+            <div id="voter-step-2" class="voter-step hidden">
+                <div class="card text-center">
+                    <h2>ตรวจสอบสิทธิ์</h2>
+                    <div id="voter-status-content"></div>
+                </div>
+            </div>
+
+            <!-- Step 3: Ballot (UC-09) -->
+            <div id="voter-step-3" class="voter-step hidden">
+                <div class="card">
+                    <h2 class="text-center">คูหาเลือกตั้งออนไลน์ (UC-09)</h2>
+                    <p class="text-center mt-1" style="color: var(--gray-500);" id="ballot-constituency-name"></p>
+                    <div class="alert alert-info mt-2">
+                        กรุณาเลือกผู้สมัครที่ต้องการ 1 คน แล้วกดยืนยัน
+                    </div>
+                    <div id="ballot-candidates" class="mt-2"></div>
+                    <div class="text-center mt-2">
+                        <button class="btn btn-success" id="confirm-vote-btn" onclick="confirmVote()" disabled>ยืนยันการลงคะแนน</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Success -->
+            <div id="voter-step-4" class="voter-step hidden">
+                <div class="card text-center">
+                    <div class="success-icon">&#10004;</div>
+                    <h2>ลงคะแนนเสร็จสิ้น!</h2>
+                    <p class="mt-1" style="color: var(--gray-500);">คะแนนของท่านได้รับการบันทึกเรียบร้อยแล้ว</p>
+                    <div id="vote-receipt" class="mt-2"></div>
+                    <a href="index.html" class="btn btn-primary mt-2">กลับหน้าดูผลคะแนน</a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Confirmation Modal -->
+    <div class="modal-overlay" id="vote-modal">
+        <div class="modal">
+            <h3>ยืนยันการลงคะแนน</h3>
+            <p id="modal-confirm-text">คุณต้องการลงคะแนนให้ผู้สมัครหมายเลข X ใช่หรือไม่?</p>
+            <div class="alert alert-warning">
+                เมื่อยืนยันแล้วจะไม่สามารถเปลี่ยนแปลงได้
+            </div>
+            <div class="btn-group mt-2" style="justify-content: center;">
+                <button class="btn btn-danger" onclick="closeModal()">ยกเลิก</button>
+                <button class="btn btn-success" onclick="submitVote()">ยืนยัน</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Prototype - ระบบเลือกตั้งออนไลน์ | Final Year Project</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="voter.js"></script>
+</body>
+</html>

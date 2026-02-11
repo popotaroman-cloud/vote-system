@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเลือกตั้งออนไลน์ - หน้าหลัก</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>ระบบเลือกตั้งออนไลน์</h1>
+            <p class="subtitle">Online Election System</p>
+            <nav class="nav">
+                <a href="index.html" class="nav-link active">หน้าหลัก</a>
+                <a href="voter.html" class="nav-link">ลงคะแนน</a>
+                <a href="admin.html" class="nav-link">กกต. เข้าสู่ระบบ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Election Status Banner -->
+        <section id="election-status" class="card status-banner">
+            <h2 id="election-name">กำลังโหลด...</h2>
+            <div class="status-info">
+                <span id="election-status-badge" class="badge">-</span>
+                <span id="election-time">-</span>
+            </div>
+        </section>
+
+        <!-- Dashboard UC-11 -->
+        <section class="dashboard">
+            <h2>ผลคะแนนการเลือกตั้ง (UC-11)</h2>
+
+            <!-- Summary Cards -->
+            <div class="summary-cards">
+                <div class="card summary-card">
+                    <div class="summary-number" id="total-votes">0</div>
+                    <div class="summary-label">คะแนนทั้งหมด</div>
+                </div>
+                <div class="card summary-card">
+                    <div class="summary-number" id="total-constituencies">0</div>
+                    <div class="summary-label">เขตเลือกตั้ง</div>
+                </div>
+                <div class="card summary-card">
+                    <div class="summary-number" id="total-candidates">0</div>
+                    <div class="summary-label">ผู้สมัครทั้งหมด</div>
+                </div>
+                <div class="card summary-card">
+                    <div class="summary-number" id="total-parties">0</div>
+                    <div class="summary-label">พรรคการเมือง</div>
+                </div>
+            </div>
+
+            <!-- Constituency Filter -->
+            <div class="filter-bar card">
+                <label for="constituency-filter">เลือกเขตเลือกตั้ง:</label>
+                <select id="constituency-filter">
+                    <option value="all">ทุกเขต (ภาพรวม)</option>
+                </select>
+            </div>
+
+            <!-- Results by Party -->
+            <div class="card">
+                <h3>คะแนนรวมตามพรรค</h3>
+                <div id="party-results" class="results-container"></div>
+            </div>
+
+            <!-- Results by Constituency -->
+            <div id="constituency-results"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Prototype - ระบบเลือกตั้งออนไลน์ | Final Year Project</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAllData();
+            renderDashboard();
+
+            document.getElementById('constituency-filter').addEventListener('change', (e) => {
+                renderDashboard(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>

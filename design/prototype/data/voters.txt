@@ -1,0 +1,11 @@
+id|email|name|constituencyId|hasVoted
+1|somchai@gmail.com|สมชาย วงศ์สกุล|1|true
+2|napat@gmail.com|ณภัทร สุขสันต์|1|false
+3|wanida@gmail.com|วนิดา ศรีทอง|2|true
+4|prasit@gmail.com|ประสิทธิ์ เจริญผล|2|false
+5|kanya@gmail.com|กัญญา ดวงแก้ว|3|true
+6|teerapong@gmail.com|ธีรพงศ์ อินทร์แก้ว|3|false
+7|suda@gmail.com|สุดา แสงจันทร์|4|true
+8|anon@gmail.com|อานนท์ สมบูรณ์|4|false
+9|rattana@gmail.com|รัตนา ภูเขา|5|true
+10|pichai@gmail.com|พิชัย มหาชัย|5|false

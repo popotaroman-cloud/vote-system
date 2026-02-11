@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบเลือกตั้งออนไลน์ - แผงควบคุม กกต.</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>แผงควบคุม กกต. กลาง</h1>
+            <p class="subtitle">EC Admin Control Panel</p>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">หน้าหลัก</a>
+                <a href="voter.html" class="nav-link">ลงคะแนน</a>
+                <a href="admin.html" class="nav-link active">กกต. เข้าสู่ระบบ</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Login Section -->
+        <div id="admin-login" class="voter-container">
+            <div class="card text-center">
+                <h2>เข้าสู่ระบบ กกต.</h2>
+                <p class="mt-1" style="color: var(--gray-500);">กรุณาเข้าสู่ระบบเพื่อจัดการการเลือกตั้ง</p>
+                <div class="form-group mt-2">
+                    <label>ชื่อผู้ใช้</label>
+                    <input type="text" id="admin-username" value="admin" placeholder="ชื่อผู้ใช้">
+                </div>
+                <div class="form-group">
+                    <label>รหัสผ่าน</label>
+                    <input type="password" id="admin-password" value="1234" placeholder="รหัสผ่าน">
+                </div>
+                <button class="btn btn-primary" onclick="adminLogin()">เข้าสู่ระบบ</button>
+                <p class="mt-2" style="font-size:0.8rem; color:var(--gray-500);">Prototype: ใช้ admin / 1234</p>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="admin-layout hidden">
+            <aside class="admin-sidebar">
+                <h3>เมนูจัดการ</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="#" class="active" onclick="showSection('parties')">UC-01 จัดการพรรค</a></li>
+                    <li><a href="#" onclick="showSection('constituencies')">UC-02 จัดการเขต</a></li>
+                    <li><a href="#" onclick="showSection('election')">UC-03 กำหนดเวลา</a></li>
+                    <li><a href="#" onclick="showSection('voters-mgmt')">UC-04 ผู้มีสิทธิ์</a></li>
+                    <li><a href="#" onclick="showSection('candidates')">UC-05 ลงทะเบียนผู้สมัคร</a></li>
+                    <li><a href="#" onclick="showSection('randomize')">UC-06 สุ่มหมายเลข</a></li>
+                    <li><a href="#" onclick="showSection('control')">UC-08 เปิด/ปิดระบบ</a></li>
+                    <li><a href="#" onclick="showSection('finalize')">UC-10 ยืนยันผล</a></li>
+                </ul>
+            </aside>
+
+            <div class="admin-content">
+                <!-- UC-01: Party Management -->
+                <div id="section-parties" class="admin-section">
+                    <div class="card">
+                        <h3>UC-01: จัดการพรรคการเมือง</h3>
+                        <div id="party-form-area">
+                            <div class="form-group">
+                                <label>ชื่อพรรค</label>
+                                <input type="text" id="party-name" placeholder="ชื่อพรรคการเมือง">
+                            </div>
+                            <div class="form-group">
+                                <label>นโยบายหลัก</label>
+                                <textarea id="party-policy" placeholder="นโยบายหลักของพรรค"></textarea>
+                            </div>
+                            <button class="btn btn-primary" onclick="addParty()">เพิ่มพรรค</button>
+                        </div>
+                    </div>
+                    <div class="card mt-2">
+                        <h3>รายชื่อพรรคการเมือง</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ชื่อพรรค</th>
+                                        <th>นโยบาย</th>
+                                        <th>การดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="party-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UC-02: Constituency Management -->
+                <div id="section-constituencies" class="admin-section hidden">
+                    <div class="card">
+                        <h3>UC-02: จัดการเขตเลือกตั้ง</h3>
+                        <div class="form-group">
+                            <label>ชื่อเขต</label>
+                            <input type="text" id="const-name" placeholder="เช่น เขต 1 กรุงเทพฯ">
+                        </div>
+                        <div class="form-group">
+                            <label>จังหวัด</label>
+                            <input type="text" id="const-province" placeholder="จังหวัด">
+                        </div>
+                        <div class="form-group">
+                            <label>จำนวนผู้มีสิทธิ์</label>
+                            <input type="number" id="const-voters" placeholder="0">
+                        </div>
+                        <button class="btn btn-primary" onclick="addConstituency()">เพิ่มเขต</button>
+                    </div>
+                    <div class="card mt-2">
+                        <h3>รายชื่อเขตเลือกตั้ง</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ชื่อเขต</th>
+                                        <th>จังหวัด</th>
+                                        <th>จำนวนผู้มีสิทธิ์</th>
+                                        <th>การดำเนินการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="const-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UC-03: Election Schedule -->
+                <div id="section-election" class="admin-section hidden">
+                    <div class="card">
+                        <h3>UC-03: กำหนดวันเวลาเลือกตั้ง</h3>
+                        <div class="form-group">
+                            <label>ชื่อการเลือกตั้ง</label>
+                            <input type="text" id="elec-name" placeholder="ชื่อการเลือกตั้ง">
+                        </div>
+                        <div class="form-group">
+                            <label>วันเวลาเริ่มต้น</label>
+                            <input type="datetime-local" id="elec-start">
+                        </div>
+                        <div class="form-group">
+                            <label>วันเวลาสิ้นสุด</label>
+                            <input type="datetime-local" id="elec-end">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveElection()">บันทึกการตั้งค่า</button>
+                    </div>
+                    <div class="card mt-2">
+                        <h3>การเลือกตั้งปัจจุบัน</h3>
+                        <div id="election-info">ยังไม่มีข้อมูล</div>
+                    </div>
+                </div>
+
+                <!-- UC-04: Voter Registration -->
+                <div id="section-voters-mgmt" class="admin-section hidden">
+                    <div class="card">
+                        <h3>UC-04: ลงทะเบียนผู้มีสิทธิ์เลือกตั้ง</h3>
+                        <div class="form-group">
+                            <label>อีเมล (Google Account)</label>
+                            <input type="email" id="voter-email" placeholder="email@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label>ชื่อ-นามสกุล</label>
+                            <input type="text" id="voter-name" placeholder="ชื่อ-นามสกุล">
+                        </div>
+                        <div class="form-group">
+                            <label>เขตเลือกตั้ง</label>
+                            <select id="voter-constituency"></select>
+                        </div>
+                        <button class="btn btn-primary" onclick="addVoter()">เพิ่มผู้มีสิทธิ์</button>
+                    </div>
+                    <div class="card mt-2">
+                        <h3>รายชื่อผู้มีสิทธิ์เลือกตั้ง</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>อีเมล</th>
+                                        <th>ชื่อ</th>
+                                        <th>เขต</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="voter-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UC-05: Candidate Registration -->
+                <div id="section-candidates" class="admin-section hidden">
+                    <div class="card">
+                        <h3>UC-05: ลงทะเบียนผู้สมัคร</h3>
+                        <div class="form-group">
+                            <label>ชื่อ-นามสกุล</label>
+                            <input type="text" id="cand-name" placeholder="ชื่อ-นามสกุล ผู้สมัคร">
+                        </div>
+                        <div class="form-group">
+                            <label>สังกัดพรรค</label>
+                            <select id="cand-party"></select>
+                        </div>
+                        <div class="form-group">
+                            <label>เขตเลือกตั้ง</label>
+                            <select id="cand-constituency"></select>
+                        </div>
+                        <button class="btn btn-primary" onclick="addCandidate()">เพิ่มผู้สมัคร</button>
+                    </div>
+                    <div class="card mt-2">
+                        <h3>รายชื่อผู้สมัคร</h3>
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ชื่อ</th>
+                                        <th>พรรค</th>
+                                        <th>เขต</th>
+                                        <th>หมายเลข</th>
+                                        <th>สถานะ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cand-table-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UC-06: Randomize Numbers -->
+                <div id="section-randomize" class="admin-section hidden">
+                    <div class="card text-center">
+                        <h3>UC-06: สุ่มหมายเลขผู้สมัคร</h3>
+                        <p style="color: var(--gray-500);">ระบบจะสุ่มหมายเลขประจำตัวผู้สมัครในแต่ละเขตแบบไม่ซ้ำกัน</p>
+                        <div class="mt-2">
+                            <div class="form-group">
+                                <label>เลือกเขตเลือกตั้ง</label>
+                                <select id="randomize-constituency">
+                                    <option value="all">ทุกเขต</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-warning" onclick="randomizeNumbers()">สุ่มหมายเลขผู้สมัคร</button>
+                        </div>
+                        <div id="randomize-result" class="mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- UC-08: Election Control -->
+                <div id="section-control" class="admin-section hidden">
+                    <div class="card text-center">
+                        <h3>UC-08: เปิด/ปิดระบบเลือกตั้ง</h3>
+                        <div id="control-status" class="mt-2">
+                            <p>สถานะปัจจุบัน: <span id="current-status" class="badge">-</span></p>
+                        </div>
+                        <div class="btn-group mt-2" style="justify-content:center;">
+                            <button class="btn btn-success" onclick="setElectionStatus('open')">เปิดระบบเลือกตั้ง</button>
+                            <button class="btn btn-danger" onclick="setElectionStatus('closed')">ปิดระบบเลือกตั้ง</button>
+                        </div>
+                        <div id="control-log" class="mt-2"></div>
+                    </div>
+                </div>
+
+                <!-- UC-10: Finalize Results -->
+                <div id="section-finalize" class="admin-section hidden">
+                    <div class="card">
+                        <h3>UC-10: ยืนยันผลการเลือกตั้ง</h3>
+                        <div class="alert alert-warning">
+                            การยืนยันผลจะเปลี่ยนสถานะเป็น "Official Result" และล็อกข้อมูลไม่ให้แก้ไขได้อีก
+                        </div>
+                        <div id="finalize-summary" class="mt-2"></div>
+                        <div class="text-center mt-2">
+                            <button class="btn btn-danger" onclick="finalizeElection()">ยืนยันผลการเลือกตั้ง (Official)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Prototype - ระบบเลือกตั้งออนไลน์ | Final Year Project</p>
+        </div>
+    </footer>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html>

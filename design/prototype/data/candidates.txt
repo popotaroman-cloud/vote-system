@@ -1,0 +1,16 @@
+id|name|partyId|constituencyId|number|photo|status
+1|นายสมชาย ใจดี|1|1|3|candidate1.png|confirmed
+2|นางสาวพิมพ์ใจ รักไทย|2|1|1|candidate2.png|confirmed
+3|นายประเสริฐ มั่นคง|4|1|5|candidate3.png|confirmed
+4|นายวิทยา ก้าวหน้า|1|2|2|candidate4.png|confirmed
+5|นางนภา สดใส|3|2|4|candidate5.png|confirmed
+6|นายอดิศร แข็งแกร่ง|5|2|1|candidate6.png|confirmed
+7|นายเกียรติศักดิ์ ซื่อตรง|2|3|1|candidate7.png|confirmed
+8|นางสาวจันทร์เพ็ญ สว่าง|1|3|3|candidate8.png|confirmed
+9|นายบุญมี ศรีสุข|3|3|2|candidate9.png|confirmed
+10|นายธนากร เจริญสุข|4|4|5|candidate10.png|confirmed
+11|นางสาวรัตนา พัฒนา|2|4|2|candidate11.png|confirmed
+12|นายสุรศักดิ์ ยุติธรรม|5|4|1|candidate12.png|confirmed
+13|นายชัยวัฒน์ ทักษิณ|1|5|4|candidate13.png|confirmed
+14|นางปราณี เมตตา|3|5|3|candidate14.png|confirmed
+15|นายอำนาจ ประชาชน|2|5|1|candidate15.png|confirmed

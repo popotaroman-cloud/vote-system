@@ -1,0 +1,42 @@
+@startuml
+title UI State Transition Diagram - Online Voting System
+
+[*] --> LandingPage : เข้าใช้งานเว็บไซต์
+
+state LandingPage {
+[*] --> PublicDashboard : ดูคะแนนแบบ Real-time (UC-11)
+PublicDashboard --> GoogleLogin : กดปุ่มลงชื่อเข้าใช้ (ผู้มีสิทธิ)
+PublicDashboard --> AdminLogin : เข้าสู่ระบบจัดการ (กกต)
+}
+state "Voter Flow (ผู้มีสิทธิเลือกตั้ง)" as VoterFlow {
+GoogleLogin --> VoterDashboard : UC-07 (Auth สำเร็จ)
+state VoterDashboard {
+   [*] --> CheckStatus : ระบบตรวจสอบสิทธิ์และเขต
+   CheckStatus --> ReadyToVote : ยังไม่ได้ลงคะแนน & ระบบเปิด (UC-08)
+   CheckStatus --> AlreadyVoted : ลงคะแนนแล้ว
+   CheckStatus --> VotingClosed : ระบบปิด/ยังไม่เปิด (UC-03)
+}
+ReadyToVote --> BallotInterface : กด "เข้าสู่คูหาออนไลน์"
+BallotInterface --> VoteConfirmation : UC-09 (เลือกหมายเลขผู้สมัคร)
+VoteConfirmation --> VotingSuccess : กดยืนยัน (Transaction บันทึกคะแนน)
+VotingSuccess --> PublicDashboard : กลับหน้าสรุปผล
+}
+state "EC Admin Flow (กกต กลาง)" as AdminFlow {
+AdminLogin --> AdminControlPanel : Login สำเร็จ
+
+state AdminControlPanel {
+   [*] --> MasterDataManagement : จัดการข้อมูลพื้นฐาน
+   MasterDataManagement --> PartyList : UC-01 (จัดการพรรค)
+   MasterDataManagement --> ConstituencyList : UC-02 (จัดการเขต)
+  
+   [*] --> CandidateManagement : UC-05 (ลงทะเบียนผู้สมัคร)
+   CandidateManagement --> RandomizeNumbers : UC-06 (กดสุ่มหมายเลข)
+  
+   [*] --> ElectionControl : UC-03, UC-08 (ตั้งค่าเวลา/เปิดระบบ)
+   ElectionControl --> FinalizeElection : UC-10 (ปิดหีบ/ยืนยันผลถาวร)
+}
+}
+AlreadyVoted --> PublicDashboard : ดูผลคะแนน
+VotingClosed --> PublicDashboard
+AdminControlPanel --> PublicDashboard : Logout
+@enduml
